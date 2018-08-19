@@ -89,4 +89,34 @@ RSpec.describe LinkedList do
       expect(node_3).to eq(rev_node_1)
     end
   end
+
+  describe 'equality' do
+    context 'with nodes of equal values' do
+      it 'is equal' do
+        list_1 = LinkedList::LinkedList.build('a', 'b', 1, 2)
+        list_2 = LinkedList::LinkedList.build('a', 'b', 1, 2)
+
+        expect(list_1 == list_2).to be_truthy
+      end
+    end
+
+    context 'with nodes of unequal values' do
+      it 'is not equal' do
+        list_1 = LinkedList::LinkedList.build(1, 2, 3, 4)
+        list_2 = LinkedList::LinkedList.build(1, 2, 3, 'd')
+
+        expect(list_1 == list_2).to be_falsey
+      end
+    end
+
+    context 'with different sizes' do
+      it 'is not equal' do
+        list_1 = LinkedList::LinkedList.build(1, 2, 3, 4)
+        list_2 = LinkedList::LinkedList.build(1, 2, 3)
+
+        expect(list_1 == list_2).to be_falsey
+        expect(list_2 == list_1).to be_falsey
+      end
+    end
+  end
 end

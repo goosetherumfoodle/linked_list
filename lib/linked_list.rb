@@ -56,10 +56,30 @@ module LinkedList
       end
     end
 
+    def ==(list)
+      eq_value(list) && eq_tail(list)
+    end
+
+    def end_of_list?
+      !next_node
+    end
+
     private
 
     def reverse_next_node(node)
       node&.reverse!(self) || self
+    end
+
+    def both_end_of_list?(node)
+      end_of_list? && node.end_of_list?
+    end
+
+    def eq_value(node)
+      value == node&.value
+    end
+
+    def eq_tail(node)
+      both_end_of_list?(node) || next_node == node.next_node
     end
   end
 end
