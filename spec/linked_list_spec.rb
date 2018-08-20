@@ -119,4 +119,24 @@ RSpec.describe LinkedList do
       end
     end
   end
+
+  describe '#map' do
+    it 'creates new list using block' do
+      list =    LinkedList::LinkedList.build(1, 2, 3, 4, 5)
+      squared = LinkedList::LinkedList.build(1, 4, 9, 16, 25)
+
+      result = list.map { |n| n * n }
+
+      expect(result).to eq(squared)
+    end
+
+    it 'does not mutate original list' do
+      list = LinkedList::LinkedList.build(1, 2, 3)
+      dupe = LinkedList::LinkedList.build(1, 2, 3)
+
+      list.map { |n| n * n }
+
+      expect(list).to eq(dupe)
+    end
+  end
 end

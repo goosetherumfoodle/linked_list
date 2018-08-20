@@ -44,6 +44,12 @@ module LinkedList
       next_node.each(&block) if next_node
     end
 
+    def map(&block)
+      new_value = yield value
+      new_next_node = next_node.map(&block) if next_node
+      self.class.new(new_value, new_next_node)
+    end
+
     def print_values
       each(&:print_value)
     end
