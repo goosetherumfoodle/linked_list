@@ -79,6 +79,19 @@ module LinkedList
       list_head
     end
 
+    def delete_when!(&predicate)
+      if predicate.call(self)
+        return next_node
+      else
+        self.next_node = next_node&.delete_when!(&predicate)
+        self
+      end
+    end
+
+    def delete_node!(node)
+      delete_when! { |n| n.object_id == node.object_id }
+    end
+
     private
 
     def reverse_next_node(node)

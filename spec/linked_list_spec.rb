@@ -143,25 +143,75 @@ RSpec.describe LinkedList do
   describe '#insert_after' do
     context 'in middle of list' do
       it 'inserts after predicate block is truthy' do
-        list = LinkedList::LinkedList.build(1, 2, 4)
         new_node = LinkedList::LinkedList.build(3)
+        list = LinkedList::LinkedList.build(1, 2, 4)
         expected = LinkedList::LinkedList.build(1, 2, 3, 4)
 
-        result = list.insert_after!(new_node) { |n| n.value == 2 }
+        list.insert_after!(new_node) { |n| n.value == 2 }
 
-        expect(result).to eq(expected)
+        expect(list).to eq(expected)
       end
     end
 
     context 'at end of list' do
       it 'if no node mades predicate block truthy, will insert at end' do
-        list = LinkedList::LinkedList.build(1, 2, 3)
         new_node = LinkedList::LinkedList.build(4)
+        list = LinkedList::LinkedList.build(1, 2, 3)
         expected = LinkedList::LinkedList.build(1, 2, 3, 4)
 
-        result = list.insert_after!(new_node) { |_| false }
+        list.insert_after!(new_node) { |_| false }
 
-        expect(result).to eq(list)
+        expect(list).to eq(expected)
+      end
+    end
+  end
+
+  describe '#delete_when!' do
+    context 'in middle of list' do
+      it 'inserts after predicate block is truthy' do
+        list = LinkedList::LinkedList.build(1, 2, 3)
+        expected = LinkedList::LinkedList.build(1, 3)
+
+        list.delete_when! { |n| n.value == 2 }
+
+        expect(list).to eq(expected)
+      end
+    end
+
+    context 'predicate always false' do
+      it 'doesn\'t modify the list' do
+        list = LinkedList::LinkedList.build(1, 2, 3)
+        expected = LinkedList::LinkedList.build(1, 2, 3)
+
+        list.delete_when! { |_| false }
+
+        expect(list).to eq(expected)
+      end
+    end
+  end
+
+    describe '#delete_node!' do
+    context 'in middle of list' do
+      it 'removes node' do
+        list = LinkedList::LinkedList.build(1, 2, 3)
+        to_delete = list.next_node
+        expected = LinkedList::LinkedList.build(1, 3)
+
+        list.delete_node!(to_delete)
+
+        expect(list).to eq(expected)
+      end
+    end
+
+    context 'when node not present' do
+      it 'doesn\'t modify the list' do
+        list = LinkedList::LinkedList.build(1, 2, 3)
+        to_delete = LinkedList::LinkedList.build('a')
+        expected = LinkedList::LinkedList.build(1, 2, 3)
+
+        list.delete_node!(to_delete)
+
+        expect(list).to eq(expected)
       end
     end
   end
