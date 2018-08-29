@@ -22,7 +22,7 @@ module LinkedList
     end
 
     def reverse
-      return self if !next_node
+      return self if end_of_list?
 
       next_node.reduce(self.class.new(value)) do |rev_list, node|
         rev_list.push(node.value)
@@ -68,6 +68,15 @@ module LinkedList
 
     def end_of_list?
       !next_node
+    end
+
+    def insert_after!(new_node, &after_this)
+      list_head = self
+      before_node = list_head.find { |node| after_this.call(node) || node.end_of_list? }
+      next_node = before_node&.next_node
+      before_node.next_node = new_node
+      new_node.next_node = next_node
+      list_head
     end
 
     private

@@ -139,4 +139,30 @@ RSpec.describe LinkedList do
       expect(list).to eq(dupe)
     end
   end
+
+  describe '#insert_after' do
+    context 'in middle of list' do
+      it 'inserts after predicate block is truthy' do
+        list = LinkedList::LinkedList.build(1, 2, 4)
+        new_node = LinkedList::LinkedList.build(3)
+        expected = LinkedList::LinkedList.build(1, 2, 3, 4)
+
+        result = list.insert_after!(new_node) { |n| n.value == 2 }
+
+        expect(result).to eq(expected)
+      end
+    end
+
+    context 'at end of list' do
+      it 'if no node mades predicate block truthy, will insert at end' do
+        list = LinkedList::LinkedList.build(1, 2, 3)
+        new_node = LinkedList::LinkedList.build(4)
+        expected = LinkedList::LinkedList.build(1, 2, 3, 4)
+
+        result = list.insert_after!(new_node) { |_| false }
+
+        expect(result).to eq(list)
+      end
+    end
+  end
 end
