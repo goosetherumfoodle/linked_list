@@ -166,6 +166,32 @@ RSpec.describe LinkedList do
     end
   end
 
+  describe '#insert_before' do
+    context 'in middle of list' do
+      it 'inserts before predicate block is truthy' do
+        new_node = LinkedList::LinkedList.build(3)
+        list = LinkedList::LinkedList.build(1, 2, 4)
+        expected = LinkedList::LinkedList.build(1, 2, 3, 4)
+
+        list.insert_before!(new_node) { |n| n.value == 4 }
+
+        expect(list).to eq(expected)
+      end
+    end
+
+    context 'at end of list' do
+      it 'if no node mades predicate block truthy, will insert at end' do
+        new_node = LinkedList::LinkedList.build(4)
+        list = LinkedList::LinkedList.build(1, 2, 3)
+        expected = LinkedList::LinkedList.build(1, 2, 3, 4)
+
+        list.insert_before!(new_node) { |_| false }
+
+        expect(list).to eq(expected)
+      end
+    end
+  end
+
   describe '#delete_when!' do
     context 'in middle of list' do
       it 'inserts after predicate block is truthy' do
@@ -190,7 +216,7 @@ RSpec.describe LinkedList do
     end
   end
 
-    describe '#delete_node!' do
+  describe '#delete_node!' do
     context 'in middle of list' do
       it 'removes node' do
         list = LinkedList::LinkedList.build(1, 2, 3)
@@ -213,6 +239,66 @@ RSpec.describe LinkedList do
 
         expect(list).to eq(expected)
       end
+    end
+  end
+
+
+  describe "fuck" do
+    it '' do
+      map_list_1 = LinkedList::LinkedList.build(
+        LinkedList::LinkedList.build(
+          {
+            a: :whatev, list: LinkedList::LinkedList.build(1)
+          }
+        )
+      )
+      map_list_2 = LinkedList::LinkedList.build(LinkedList::LinkedList.build({a: :whatev, list: LinkedList::LinkedList.build(1)}))
+
+      expect(map_list_1).to eq(map_list_2)
+    end
+
+    it 'AGAIN' do
+      list = LinkedList::LinkedList.build(
+        {largest: 2,
+         list: LinkedList::LinkedList.build(1, 2)},
+        {largest: 4,
+         list: LinkedList::LinkedList.build(1, 2, 4)},
+        {largest: 2,
+         list: LinkedList::LinkedList.build(2)},
+      )
+
+      list_2 = LinkedList::LinkedList.build(
+        {largest: 2,
+         list: LinkedList::LinkedList.build(1, 2)},
+        {largest: 4,
+         list: LinkedList::LinkedList.build(1, 2, 4)},
+        {largest: 2,
+         list: LinkedList::LinkedList.build(2)},
+      )
+
+      expect(list).to eq(list_2)
+    end
+
+    it 'FUCKFUCKFUCKFUCKFUCK' do
+      expected_1 = LinkedList::LinkedList.build(
+        {largest: 2,
+         list: LinkedList::LinkedList.build(1, 2)},
+        {largest: 2,
+         list: LinkedList::LinkedList.build(1, 2)},
+        {largest: 2,
+         list: LinkedList::LinkedList.build(2)}
+      )
+
+      expected_2 = LinkedList::LinkedList.build(
+        {largest: 2,
+         list: LinkedList::LinkedList.build(1, 2)},
+        {largest: 2,
+         list: LinkedList::LinkedList.build(1, 2)},
+        {largest: 2,
+         list: LinkedList::LinkedList.build(2)}
+      )
+
+      expect(expected_1).to eq(expected_2)
     end
   end
 end
