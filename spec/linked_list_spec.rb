@@ -190,6 +190,18 @@ RSpec.describe LinkedList do
         expect(list).to eq(expected)
       end
     end
+
+    context 'at the end of the list' do
+      it "doesn\'t pass nil into the block" do
+        new_node = LinkedList::LinkedList.build(2)
+        list = LinkedList::LinkedList.build(1)
+        expected = LinkedList::LinkedList.build(1, 2)
+
+        list.insert_before!(new_node) { |n| n.value }
+
+        expect(list).to eq(expected)
+      end
+    end
   end
 
   describe '#delete_when!' do
@@ -241,7 +253,6 @@ RSpec.describe LinkedList do
       end
     end
   end
-
 
   describe "fuck" do
     it '' do

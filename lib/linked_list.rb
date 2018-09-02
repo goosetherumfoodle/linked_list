@@ -81,11 +81,15 @@ module LinkedList
 
     def insert_before!(new_node, &before_this)
       list_head = self
-      after_node = list_head.find { |node| before_this.call(node.next_node) || node.end_of_list? }
-      old_next_node = after_node.next_node
-      new_node.next_node = old_next_node
-      after_node.next_node = new_node
-      list_head
+      after_node = list_head.find { |node| node.next_node && before_this.call(node.next_node) }
+      if after_node
+        old_next_node = after_node.next_node
+        new_node.next_node = old_next_node
+        after_node.next_node = new_node
+        return list_head
+      else
+        return insert_after!(new_node) { |_| false }
+      end
     end
 
     def delete_when!(&predicate)
