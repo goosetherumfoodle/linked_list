@@ -173,33 +173,52 @@ RSpec.describe LinkedList do
         list = LinkedList::LinkedList.build(1, 2, 4)
         expected = LinkedList::LinkedList.build(1, 2, 3, 4)
 
-        list.insert_before!(new_node) { |n| n.value == 4 }
+        list.insert_before(new_node) { |n| n.value == 4 }
 
         expect(list).to eq(expected)
       end
     end
 
     context 'at end of list' do
-      it 'if no node mades predicate block truthy, will insert at end' do
+      it 'if no node makes predicate block truthy, will append at the end' do
         new_node = LinkedList::LinkedList.build(4)
         list = LinkedList::LinkedList.build(1, 2, 3)
         expected = LinkedList::LinkedList.build(1, 2, 3, 4)
 
-        list.insert_before!(new_node) { |_| false }
+        list.insert_before(new_node) { |_| false }
+
+        expect(list).to eq(expected)
+      end
+
+      it 'can push into second to last value' do
+        new_node = LinkedList::LinkedList.build(3)
+        list = LinkedList::LinkedList.build(1, 2, 4)
+        expected = LinkedList::LinkedList.build(1, 2, 3, 4)
+
+        list.insert_before(new_node) { |n| n.value == 4 }
 
         expect(list).to eq(expected)
       end
     end
 
-    context 'at the end of the list' do
-      it "doesn\'t pass nil into the block" do
-        new_node = LinkedList::LinkedList.build(2)
-        list = LinkedList::LinkedList.build(1)
+    context '1 element list with truthy predicate' do
+      it 'pushes value onto front of list' do
+        new_node = LinkedList::LinkedList.build(1)
+        list = LinkedList::LinkedList.build(2)
         expected = LinkedList::LinkedList.build(1, 2)
 
-        list.insert_before!(new_node) { |n| n.value }
+        result = list.insert_before(new_node) { |_| true }
 
-        expect(list).to eq(expected)
+        expect(result).to eq(expected)
+      end
+
+      it "doesn't pass nil (from #next_node) into the block" do
+        new_node = LinkedList::LinkedList.build(2)
+        list = LinkedList::LinkedList.build(1)
+
+        expect do
+          list.insert_before(new_node) { |n| raise StandardError if n.nil? }
+        end.to_not raise_error
       end
     end
   end
